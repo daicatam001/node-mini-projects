@@ -53,3 +53,7 @@ exports.login = async (req, res) => {
 }
 
 
+exports.authorize = (req, res) => {
+    const username = req.username
+    res.status(200).json({ username })
+}

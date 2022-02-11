@@ -5,3 +5,9 @@ content-type: application/json
     "username": "username",
     "password": "password"
 }
+
+
+###
+
+GET http://localhost:3000/authorize
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiaWF0IjoxNjQ0NTc4Nzc1fQ.b4s_RTTzkBXcI8CYhuNvALjbKrkccKLS4_Y6271LAmA
