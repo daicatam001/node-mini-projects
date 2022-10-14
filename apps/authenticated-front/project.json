@@ -1,0 +1,87 @@
+{
+  "name": "authenticated-front",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/authenticated-front/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/authenticated-front",
+        "index": "apps/authenticated-front/src/index.html",
+        "baseHref": "/",
+        "main": "apps/authenticated-front/src/main.tsx",
+        "polyfills": "apps/authenticated-front/src/polyfills.ts",
+        "tsConfig": "apps/authenticated-front/tsconfig.app.json",
+        "assets": [
+          "apps/authenticated-front/src/favicon.ico",
+          "apps/authenticated-front/src/assets"
+        ],
+        "styles": [
+          "apps/authenticated-front/src/styles.css"
+        ],
+        "scripts": [],
+        "webpackConfig": "@nrwl/react/plugins/webpack"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/authenticated-front/src/environments/environment.ts",
+              "with": "apps/authenticated-front/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/webpack:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "authenticated-front:build",
+        "hmr": true
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "authenticated-front:build:development"
+        },
+        "production": {
+          "buildTarget": "authenticated-front:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "apps/authenticated-front/**/*.{ts,tsx,js,jsx}"
+        ]
+      }
+    }
+  },
+  "tags": [
+    "scrope:authenticate",
+    "scope:front"
+  ]
+}
