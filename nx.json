@@ -10,8 +10,16 @@
       }
     }
   },
-  "targetDefaults": {},
+  "targetDefaults": {
+    "lint": {
+      "inputs": [
+        "default",
+        "{workspaceRoot}/.eslintrc.json"
+      ]
+    }
+  },
   "affected": {
     "defaultBase": "master"
-  }
+  },
+  "defaultProject": "authenticated"
 }

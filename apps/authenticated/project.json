@@ -1,0 +1,63 @@
+{
+  "name": "authenticated",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/authenticated/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/authenticated",
+        "main": "apps/authenticated/src/main.ts",
+        "tsConfig": "apps/authenticated/tsconfig.app.json",
+        "assets": [
+          "apps/authenticated/src/assets"
+        ]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/authenticated/src/environments/environment.ts",
+              "with": "apps/authenticated/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/js:node",
+      "options": {
+        "buildTarget": "authenticated:build"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "authenticated:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "apps/authenticated/**/*.ts"
+        ]
+      }
+    }
+  },
+  "tags": [
+    "scope:application",
+    "scope:express"
+  ]
+}
