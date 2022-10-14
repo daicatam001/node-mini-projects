@@ -2,3 +2,15 @@
 @tailwind components;
 @tailwind base;
 @tailwind utilities;
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  @apply bg-slate-100
+}
+
+* {
+  box-sizing: border-box;
+}
