@@ -57,6 +57,13 @@ exports["default"] = router;
 
 /***/ }),
 
+/***/ "cors":
+/***/ ((module) => {
+
+module.exports = require("cors");
+
+/***/ }),
+
 /***/ "express":
 /***/ ((module) => {
 
@@ -103,13 +110,15 @@ var exports = __webpack_exports__;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const express = __webpack_require__("express");
 const routers_1 = __webpack_require__("./apps/authenticated/src/app/routers/index.ts");
+const cors = __webpack_require__("cors");
 const app = express();
+app.use(cors());
 app.use(routers_1.default);
 const port = process.env.port || 3333;
 const server = app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}/api`);
 });
-server.on('error', console.error);
+server.on("error", console.error);
 
 })();
 
