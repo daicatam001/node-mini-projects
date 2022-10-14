@@ -1,16 +1,16 @@
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-
-
+import Home from "apps/authenticated-front/src/app/pages/Home/Home";
+import Login from "apps/authenticated-front/src/app/pages/Login/Login";
+import { Outlet, Route, Routes } from "react-router-dom";
 
 export function App() {
-
   return (
-    <>
-      <div className='bg-red-50'>23232</div>
-    </>);
-
+    <Routes>
+      <Route path="/" element={<Outlet />}>
+        <Route index element={<Home />} />
+        <Route path="login" element={<Login />} />
+      </Route>
+    </Routes>
+  );
 }
-
 
 export default App;
