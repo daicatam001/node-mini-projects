@@ -2,6 +2,61 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./apps/authenticated/src/app/controllers/index.ts":
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.signup = void 0;
+const helpers_1 = __webpack_require__("./apps/authenticated/src/app/helpers/index.ts");
+exports.signup = (0, helpers_1.errorHandler)((req, res) => {
+    return res.status(200).json({
+        success: true,
+        data: { name: "tom" },
+    });
+});
+
+
+/***/ }),
+
+/***/ "./apps/authenticated/src/app/helpers/index.ts":
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.errorHandler = void 0;
+const errorHandler = function (callback) {
+    return (req, res, next) => {
+        try {
+            callback(req, res, next);
+        }
+        catch (e) {
+            return res.status(500).json({
+                success: false,
+                error: "Internal error",
+            });
+        }
+    };
+};
+exports.errorHandler = errorHandler;
+
+
+/***/ }),
+
+/***/ "./apps/authenticated/src/app/routers/index.ts":
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const controllers_1 = __webpack_require__("./apps/authenticated/src/app/controllers/index.ts");
+const express = __webpack_require__("express");
+const router = express.Router();
+router.post("/api/sign-up", controllers_1.signup);
+exports["default"] = router;
+
+
+/***/ }),
+
 /***/ "express":
 /***/ ((module) => {
 
@@ -46,14 +101,13 @@ var exports = __webpack_exports__;
  * This is only a minimal backend to get started.
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-var express = __webpack_require__("express");
-var app = express();
-app.get('/api', function (req, res) {
-    res.send({ message: 'Welcome to authenticated!' });
-});
-var port = process.env.port || 3333;
-var server = app.listen(port, function () {
-    console.log("Listening at http://localhost:".concat(port, "/api"));
+const express = __webpack_require__("express");
+const routers_1 = __webpack_require__("./apps/authenticated/src/app/routers/index.ts");
+const app = express();
+app.use(routers_1.default);
+const port = process.env.port || 3333;
+const server = app.listen(port, () => {
+    console.log(`Listening at http://localhost:${port}/api`);
 });
 server.on('error', console.error);
 

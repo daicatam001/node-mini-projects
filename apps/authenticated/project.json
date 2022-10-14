@@ -14,10 +14,7 @@
         "compiler": "tsc",
         "outputPath": "dist/apps/authenticated",
         "main": "apps/authenticated/src/main.ts",
-        "tsConfig": "apps/authenticated/tsconfig.app.json",
-        "assets": [
-          "apps/authenticated/src/assets"
-        ]
+        "tsConfig": "apps/authenticated/tsconfig.app.json"
       },
       "configurations": {
         "production": {
