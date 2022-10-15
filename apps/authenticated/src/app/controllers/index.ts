@@ -3,6 +3,7 @@ import Profile from "apps/authenticated/src/app/models/profile";
 import User from "apps/authenticated/src/app/models/user";
 import * as bcrypt from "bcrypt";
 import { Request, Response } from "express";
+import jwt from 'jsonwebtoken'
 export const signup = errorHandler(async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
   const foundUser = await User.findOne({ email });
@@ -24,11 +25,12 @@ export const signup = errorHandler(async (req: Request, res: Response) => {
     email,
     password: hashedPassword,
   });
-  const profile = await Profile.create({
+  let profile = await Profile.create({
     name,
     email,
     userId: user._id,
   });
+  profile = profile.toDaTa()
   return res.status(200).json({
     success: true,
     data: profile,
