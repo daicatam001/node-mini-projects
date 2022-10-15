@@ -1,9 +1,10 @@
 import { errorHandler } from "apps/authenticated/src/app/helpers";
 import Profile from "apps/authenticated/src/app/models/profile";
 import User from "apps/authenticated/src/app/models/user";
+import { environment } from "apps/authenticated/src/environments/environment";
 import * as bcrypt from "bcrypt";
 import { Request, Response } from "express";
-import jwt from 'jsonwebtoken'
+import * as jwt from "jsonwebtoken";
 export const signup = errorHandler(async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
   const foundUser = await User.findOne({ email });
@@ -25,14 +26,24 @@ export const signup = errorHandler(async (req: Request, res: Response) => {
     email,
     password: hashedPassword,
   });
-  let profile = await Profile.create({
+  const profile = await Profile.create({
     name,
     email,
     userId: user._id,
   });
-  profile = profile.toDaTa()
+  const publicProfile = profile.toData();
+  const token = jwt.sign(
+    {
+      data: publicProfile,
+    },
+    environment.secretToken,
+    { expiresIn: 60 * 5 }
+  );
   return res.status(200).json({
     success: true,
-    data: profile,
+    data: {
+      user: publicProfile,
+      token: token,
+    },
   });
 });
