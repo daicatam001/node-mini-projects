@@ -20,6 +20,7 @@ app.use(routers);
 
 const port = process.env.port || 3333;
 const server = app.listen(port, async () => {
+  console.log(`mongodb+srv://${environment.dbUsername}:${environment.dbPassword}@${environment.dbCluster}.mongodb.net/${environment.dbName}?retryWrites=true&w=majority`)
   await mongoose.connect(
     `mongodb+srv://${environment.dbUsername}:${environment.dbPassword}@${environment.dbCluster}.mongodb.net/${environment.dbName}?retryWrites=true&w=majority`
   );

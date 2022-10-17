@@ -28,6 +28,7 @@ const refreshTokenSchema = new Schema<IRefreshToken, IProfileModel>(
   },
   {
     timestamps: true,
+    collection: "refresh-tokens",
   }
 );
 
