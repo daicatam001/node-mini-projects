@@ -1,19 +1,19 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 
 interface SignUpFormProps {
   onSubmit: (name: string, email: string, password: string) => void;
 }
 
 export default ({ onSubmit }: SignUpFormProps) => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
   const submitHandler = (event: FormEvent) => {
-    event.preventDefault();
-    if (!name || !email || !password) {
-      return;
-    }
-    onSubmit(name, email, password);
+    onSubmit(
+      (nameRef.current as HTMLInputElement).value.trim(),
+      (emailRef.current as HTMLInputElement).value.trim(),
+      (passwordRef.current as HTMLInputElement).value.trim()
+    );
   };
   return (
     <form onSubmit={submitHandler}>
@@ -22,10 +22,7 @@ export default ({ onSubmit }: SignUpFormProps) => {
           <label className="block mb-1">Name</label>
           <input
             className="block w-full rounded-md"
-            value={name}
-            onInput={(event: FormEvent<HTMLInputElement>) =>
-              setName((event.target as HTMLInputElement).value)
-            }
+            ref={nameRef}
             type="text"
             placeholder="John Smith"
           />
@@ -34,10 +31,7 @@ export default ({ onSubmit }: SignUpFormProps) => {
           <label className="block mb-1">Email</label>
           <input
             className="block w-full rounded-md"
-            value={email}
-            onInput={(event: FormEvent<HTMLInputElement>) =>
-              setEmail((event.target as HTMLInputElement).value)
-            }
+            ref={emailRef}
             type="text"
             placeholder="you@awesome.com"
           />
@@ -47,10 +41,7 @@ export default ({ onSubmit }: SignUpFormProps) => {
           <input
             className="block w-full rounded-md"
             type="password"
-            value={password}
-            onInput={(event: FormEvent<HTMLInputElement>) =>
-              setPassword((event.target as HTMLInputElement).value)
-            }
+            ref={passwordRef}
             placeholder="supersecret"
           />
         </div>
