@@ -5,4 +5,6 @@ export const environment = {
   dbCluster: "cluster0.n5ikb",
   dbName: "authenticated",
   secretToken: "secret-token",
+  jwtTokenExpire: 300,
+  refreshTokenExpire: 86400
 };

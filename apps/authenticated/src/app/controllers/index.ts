@@ -1,12 +1,20 @@
 import { errorHandler } from "apps/authenticated/src/app/helpers";
 import Profile from "apps/authenticated/src/app/models/profile";
+import RefreshToken from "apps/authenticated/src/app/models/refresh-token";
 import User from "apps/authenticated/src/app/models/user";
 import { environment } from "apps/authenticated/src/environments/environment";
 import * as bcrypt from "bcrypt";
 import { Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
+
 export const signup = errorHandler(async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
+  if (!name || !email || !password) {
+    return res.status(400).json({
+      success: false,
+      error: "MISSING_REQUIRED_DATA",
+    });
+  }
   const foundUser = await User.findOne({ email });
   if (foundUser) {
     return res.status(400).json({
@@ -32,18 +40,20 @@ export const signup = errorHandler(async (req: Request, res: Response) => {
     userId: user._id,
   });
   const publicProfile = profile.toData();
-  const token = jwt.sign(
+  const jwtToken = jwt.sign(
     {
       data: publicProfile,
     },
     environment.secretToken,
-    { expiresIn: 60 * 5 }
+    { expiresIn: environment.jwtTokenExpire }
   );
+  const refreshToken = await RefreshToken.createToken(jwtToken);
   return res.status(200).json({
     success: true,
     data: {
       user: publicProfile,
-      token: token,
+      token: jwtToken,
+      refreshToken: refreshToken.token,
     },
   });
 });
