@@ -3,7 +3,7 @@ import authReducer from "apps/authenticated-front/src/app/state/authSlide";
 
 export const store = configureStore({
   reducer: {
-    auth: authSlide,
+    auth: authReducer,
   },
 });
 

@@ -1,13 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User } from "apps/authenticated-front/src/app/models/user";
-import { STATES } from "mongoose";
+import { IAuth, IUser } from "apps/authenticated-front/src/app/models";
 
-export interface AuthState {
-  token: string | null;
-  refreshToken: string | null;
-  user: User | null;
-}
-
+export type AuthState = IAuth;
 const initialState: AuthState = {
   token: null,
   refreshToken: null,
@@ -18,7 +12,7 @@ export const authSlide = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<User>) => {
+    setUser: (state, action: PayloadAction<IUser>) => {
       state.user = action.payload;
     },
     setToken: (state, action: PayloadAction<string>) => {
@@ -27,9 +21,15 @@ export const authSlide = createSlice({
     setRefreshToken: (state, action: PayloadAction<string>) => {
       state.refreshToken = action.payload;
     },
+    initAuth: (state, action: PayloadAction<AuthState>) => {
+      state.refreshToken = action.payload.refreshToken;
+      state.token = action.payload.token;
+      state.user = action.payload.user;
+    },
   },
 });
 
-export const { setUser, setToken, setRefreshToken } = authSlide.actions;
+export const { setUser, setToken, setRefreshToken, initAuth } =
+  authSlide.actions;
 
 export default authSlide.reducer;

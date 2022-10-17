@@ -1,21 +1,24 @@
-import api from "apps/authenticated-front/src/app/api";
+import api, { signUp } from "apps/authenticated-front/src/app/api";
 import SignUpForm from "apps/authenticated-front/src/app/components/SignUpForm/SignUpForm";
+import { initAuth } from "apps/authenticated-front/src/app/state/authSlide";
+import { useDispatch } from "react-redux";
 
 export default () => {
+  const dispatch = useDispatch();
   const signUpHandler = async (
     name: string,
     email: string,
     password: string
   ) => {
-    const { data } = await api
-      .post("/sign-up", { name, email, password })
-      .catch(() => ({ data: null }));
-    console.log(data);
+    const {
+      data: { user, token, refreshToken },
+    } = await signUp({ name, email, password });
+    dispatch(initAuth({ user, token, refreshToken }));
   };
   return (
     <div className="pt-[100px]">
       <div className="max-w-[400px] mx-auto">
-        <h1 className="font-bold text-3xl mb-8">Authenticated Join</h1>
+        <h1 className="font-bold text-3xl mb-8 text-center">Join now!</h1>
         <SignUpForm onSubmit={signUpHandler} />
       </div>
     </div>
