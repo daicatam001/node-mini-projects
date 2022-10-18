@@ -1,20 +1,30 @@
-import { model, Schema } from "mongoose";
+import { Model, model, Schema, Types } from "mongoose";
+import { IAccount } from "./account";
 
 export interface IUser {
   email: string;
-  password: string;
+  name: string;
+  accountId: IAccount;
 }
 
+export interface IUserMethods {
+  toData: () => IUser;
+}
 
-const userSchema = new Schema<IUser>(
+export type IUserModel = Model<IUser, {}, IUserMethods>;
+
+const userSchema = new Schema<IUser, IUserModel, IUserMethods>(
   {
     email: {
       type: String,
-      required: true,
     },
-    password: {
+    name: {
       type: String,
       required: true,
+    },
+    accountId: {
+      type: Types.ObjectId,
+      ref: "Account",
     },
   },
   {
@@ -22,5 +32,13 @@ const userSchema = new Schema<IUser>(
   }
 );
 
-const User = model("User", userSchema);
+userSchema.methods.toData = function () {
+  const data = this.toJSON({ virtuals: true, id: true });
+  delete data.accountId;
+  delete data.__v;
+  delete data._id;
+  return data;
+};
+
+const User = model<IUser, IUserModel>("User", userSchema);
 export default User;
