@@ -1,7 +1,7 @@
 import { errorHandler } from "apps/authenticated/src/app/helpers";
-import Profile from "apps/authenticated/src/app/models/profile";
-import RefreshToken from "apps/authenticated/src/app/models/refresh-token";
 import User from "apps/authenticated/src/app/models/user";
+import RefreshToken from "apps/authenticated/src/app/models/refresh-token";
+import Account from "apps/authenticated/src/app/models/account";
 import { environment } from "apps/authenticated/src/environments/environment";
 import * as bcrypt from "bcrypt";
 import { Request, Response } from "express";
@@ -15,8 +15,8 @@ export const signup = errorHandler(async (req: Request, res: Response) => {
       error: "MISSING_REQUIRED_DATA",
     });
   }
-  const foundUser = await User.findOne({ email });
-  if (foundUser) {
+  const foundAccount = await Account.findOne({ email });
+  if (foundAccount) {
     return res.status(400).json({
       success: false,
       message: "EMAIL_EXISTED",
@@ -30,19 +30,19 @@ export const signup = errorHandler(async (req: Request, res: Response) => {
       resolve(hash);
     });
   });
-  const user = await User.create({
+  const account = await Account.create({
     email,
     password: hashedPassword,
   });
-  const profile = await Profile.create({
+  const user = await User.create({
     name,
     email,
-    userId: user._id,
+    accountId: account._id,
   });
-  const publicProfile = profile.toData();
+  const publicUser = user.toData();
   const jwtToken = jwt.sign(
     {
-      data: publicProfile,
+      user: publicUser,
     },
     environment.secretToken,
     { expiresIn: environment.jwtTokenExpire }
@@ -51,9 +51,22 @@ export const signup = errorHandler(async (req: Request, res: Response) => {
   return res.status(200).json({
     success: true,
     data: {
-      user: publicProfile,
+      user: publicUser,
       token: jwtToken,
       refreshToken: refreshToken.token,
     },
+  });
+});
+
+export const findAuth = errorHandler(async (req: Request, res: Response) => {
+  if (req.user) {
+    return res.status(200).json({
+      success: true,
+      data: req.user,
+    });
+  }
+  return res.status(500).json({
+    success: false,
+    error: "UNAUTHORIZED",
   });
 });

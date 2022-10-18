@@ -1,4 +1,4 @@
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useRef } from "react";
 
 interface SignUpFormProps {
   onSubmit: (name: string, email: string, password: string) => void;
@@ -9,6 +9,7 @@ export default ({ onSubmit }: SignUpFormProps) => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const submitHandler = (event: FormEvent) => {
+    event.preventDefault()
     onSubmit(
       (nameRef.current as HTMLInputElement).value.trim(),
       (emailRef.current as HTMLInputElement).value.trim(),

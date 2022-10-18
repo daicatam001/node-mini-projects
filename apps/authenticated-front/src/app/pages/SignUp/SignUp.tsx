@@ -1,6 +1,6 @@
 import api, { signUp } from "apps/authenticated-front/src/app/api";
 import SignUpForm from "apps/authenticated-front/src/app/components/SignUpForm/SignUpForm";
-import { initAuth } from "apps/authenticated-front/src/app/state/authSlide";
+import { setAuth } from "apps/authenticated-front/src/app/state/authSlide";
 import { useDispatch } from "react-redux";
 
 export default () => {
@@ -13,7 +13,7 @@ export default () => {
     const {
       data: { user, token, refreshToken },
     } = await signUp({ name, email, password });
-    dispatch(initAuth({ user, token, refreshToken }));
+    dispatch(setAuth({ user, token, refreshToken }));
   };
   return (
     <div className="pt-[100px]">
