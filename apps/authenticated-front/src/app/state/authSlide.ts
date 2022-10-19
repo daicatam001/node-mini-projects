@@ -52,6 +52,7 @@ export const { setUser, setToken, setRefreshToken, setAuth, initTokens } =
 
 export const selectIsAuth = ({ auth }: { auth: AuthState }) => !!auth.user;
 export const selectToken = ({ auth }: { auth: AuthState }) => auth.token;
+export const selectRefreshToken = ({ auth }: { auth: AuthState }) => auth.refreshToken;
 export const selectHasTokens = ({ auth }: { auth: AuthState }) =>
   !!auth.token && !!auth.refreshToken;
 export default authSlide.reducer;

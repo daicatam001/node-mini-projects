@@ -7,7 +7,7 @@ export interface IUser {
 export type UserSignUp = Pick<IUser, "name" | "email"> & { password: string };
 
 export interface IAuth{
-  token: string | null;
-  refreshToken: string | null;
-  user: IUser | null;
+  token?: string | null;
+  refreshToken?: string | null;
+  user?: IUser | null;
 }

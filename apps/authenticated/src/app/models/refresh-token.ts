@@ -62,7 +62,7 @@ refreshTokenSchema.static(
 );
 
 refreshTokenSchema.methods.isExpired = function () {
-  return new Date(this.expireAt).getTime() > Date.now();
+  return new Date(this.expireAt).getTime() < Date.now();
 };
 
 const RefreshToken = model<IRefreshToken, IRefreshTokenModel>(

@@ -90,11 +90,23 @@ export const refreshToken = errorHandler(
         error: "INVALID_REFRESH_TOKEN",
       });
     }
-    if(checkingRefreshToken.isExpired()){
-       return res.status(403).json({
-         success: false,
-         error: "REFRESH_TOKEN_EXPIRED",
-       });
+    if (checkingRefreshToken.isExpired()) {
+      return res.status(403).json({
+        success: false,
+        error: "REFRESH_TOKEN_EXPIRED",
+      });
     }
+    const user = await User.findById(checkingRefreshToken.userId);
+    const jwtToken = jwt.sign(
+      {
+        user: user.toData(),
+      },
+      environment.secretToken,
+      { expiresIn: environment.jwtTokenExpire }
+    );
+    return res.status(200).json({
+      success: true,
+      data: jwtToken,
+    });
   }
 );
