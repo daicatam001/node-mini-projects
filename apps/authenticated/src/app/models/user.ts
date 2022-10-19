@@ -2,6 +2,8 @@ import { Model, model, Schema, Types } from "mongoose";
 import { IAccount } from "./account";
 
 export interface IUser {
+  id: string;
+  _id: string;
   email: string;
   name: string;
   accountId: IAccount;
@@ -36,7 +38,6 @@ userSchema.methods.toData = function () {
   const data = this.toJSON({ virtuals: true, id: true });
   delete data.accountId;
   delete data.__v;
-  delete data._id;
   return data;
 };
 

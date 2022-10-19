@@ -14,7 +14,7 @@ export const authSlide = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setUser: (state: AuthState, action: PayloadAction<IUser>) => {
+    setUser: (state: AuthState, action: PayloadAction<IUser | null>) => {
       state.user = action.payload;
     },
     setToken: (state: AuthState, action: PayloadAction<string>) => {

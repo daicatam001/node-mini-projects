@@ -47,7 +47,7 @@ export const signup = errorHandler(async (req: Request, res: Response) => {
     environment.secretToken,
     { expiresIn: environment.jwtTokenExpire }
   );
-  const refreshToken = await RefreshToken.createToken(jwtToken);
+  const refreshToken = await RefreshToken.createToken(jwtToken, publicUser._id);
   return res.status(200).json({
     success: true,
     data: {
@@ -70,3 +70,31 @@ export const findAuth = errorHandler(async (req: Request, res: Response) => {
     error: "UNAUTHORIZED",
   });
 });
+
+export const refreshToken = errorHandler(
+  async (req: Request, res: Response) => {
+    const { refreshToken, token } = req.body;
+    if (!refreshToken) {
+      return res.status(403).json({
+        success: false,
+        error: "EMPTY_REFRESH_TOKEN",
+      });
+    }
+    const checkingRefreshToken = await RefreshToken.findOne({
+      jwtToken: token,
+      token: refreshToken,
+    });
+    if (!checkingRefreshToken) {
+      return res.status(403).json({
+        success: false,
+        error: "INVALID_REFRESH_TOKEN",
+      });
+    }
+    if(checkingRefreshToken.isExpired()){
+       return res.status(403).json({
+         success: false,
+         error: "REFRESH_TOKEN_EXPIRED",
+       });
+    }
+  }
+);

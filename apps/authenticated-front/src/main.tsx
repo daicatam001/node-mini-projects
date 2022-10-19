@@ -16,7 +16,7 @@ const start = async () => {
   store.dispatch(initTokens());
   const hasTokens = selectHasTokens(store.getState());
   if (hasTokens) {
-    const { data } = await findAuth().catch();
+    const { data } = await findAuth().catch(() => ({ data: null }));
     store.dispatch(setUser(data));
   }
   renderRoot();

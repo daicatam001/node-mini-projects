@@ -1,19 +1,30 @@
+import { IUser } from "apps/authenticated/src/app/models/user";
 import { environment } from "apps/authenticated/src/environments/environment";
 import { addSeconds } from "date-fns";
-import { Model, model, Schema } from "mongoose";
+import { Model, model, Schema, Types } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 
 export interface IRefreshToken {
   token: string;
   jwtToken: string;
+  userId: IUser;
   expireAt: Date;
 }
 
-export interface IProfileModel extends Model<IRefreshToken> {
-  createToken: (jwtToken: string) => Promise<IRefreshToken>;
+export interface IRefreshTokenModel
+  extends Model<IRefreshToken, {}, IRefreshTokenMethods> {
+  createToken: (jwtToken: string, userId: string) => Promise<IRefreshToken>;
 }
 
-const refreshTokenSchema = new Schema<IRefreshToken, IProfileModel>(
+export interface IRefreshTokenMethods {
+  isExpired: () => boolean;
+}
+
+const refreshTokenSchema = new Schema<
+  IRefreshToken,
+  IRefreshTokenModel,
+  IRefreshTokenMethods
+>(
   {
     token: {
       type: String,
@@ -25,6 +36,10 @@ const refreshTokenSchema = new Schema<IRefreshToken, IProfileModel>(
     expireAt: {
       type: Date,
     },
+    userId: {
+      type: Types.ObjectId,
+      ref: "User",
+    },
   },
   {
     timestamps: true,
@@ -32,17 +47,25 @@ const refreshTokenSchema = new Schema<IRefreshToken, IProfileModel>(
   }
 );
 
-refreshTokenSchema.static("createToken", function (jwtToken: string) {
-  const expireAt = addSeconds(new Date(), environment.refreshTokenExpire);
-  const _refreshToken = uuidv4();
-  return this.create({
-    jwtToken,
-    token: _refreshToken,
-    expireAt,
-  });
-});
+refreshTokenSchema.static(
+  "createToken",
+  function (jwtToken: string, userId: string) {
+    const expireAt = addSeconds(new Date(), environment.refreshTokenExpire);
+    const _refreshToken = uuidv4();
+    return this.create({
+      jwtToken,
+      userId,
+      token: _refreshToken,
+      expireAt,
+    });
+  }
+);
 
-const RefreshToken = model<IRefreshToken, IProfileModel>(
+refreshTokenSchema.methods.isExpired = function () {
+  return new Date(this.expireAt).getTime() > Date.now();
+};
+
+const RefreshToken = model<IRefreshToken, IRefreshTokenModel>(
   "RefreshToken",
   refreshTokenSchema
 );

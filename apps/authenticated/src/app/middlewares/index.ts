@@ -6,6 +6,7 @@ export const authorize = (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization.split(" ")[1];
     const decodeToken = jwt.verify(token, environment.secretToken);
     req.user = decodeToken.user;
+    req.token = token
     next();
   } catch (e) {
     res.status(401).json({

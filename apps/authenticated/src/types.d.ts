@@ -1,11 +1,12 @@
-import { IUser } from 'apps/authenticated/src/app/models/user';
+import { IUser } from "apps/authenticated/src/app/models/user";
 
-export { };
+export {};
 
 declare global {
   namespace Express {
     export interface Request {
       user?: IUser;
+      token?: string;
     }
   }
 }
