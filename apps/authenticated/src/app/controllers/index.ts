@@ -39,20 +39,12 @@ export const signup = errorHandler(async (req: Request, res: Response) => {
     email,
     accountId: account._id,
   });
-  const publicUser = user.toData();
-  const jwtToken = jwt.sign(
-    {
-      user: publicUser,
-    },
-    environment.secretToken,
-    { expiresIn: environment.jwtTokenExpire }
-  );
-  const refreshToken = await RefreshToken.createToken(jwtToken, publicUser._id);
+  const refreshToken = await RefreshToken.createToken(user.toData());
   return res.status(200).json({
     success: true,
     data: {
-      user: publicUser,
-      token: jwtToken,
+      user: user.toData(),
+      token: refreshToken.jwtToken,
       refreshToken: refreshToken.token,
     },
   });

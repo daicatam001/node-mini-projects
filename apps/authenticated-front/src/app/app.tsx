@@ -16,7 +16,7 @@ export function App() {
           <>
             <Route
               index
-              element={<Navigate to={isAuth ? "/" : "/join"} />}
+              element={<Navigate to={isAuth ? "/" : "/login"} />}
             ></Route>
             <Route path="login" element={<Login />} />
             <Route path="join" element={<SignUp />} />

@@ -1,10 +1,12 @@
+import Spinner from "apps/authenticated-front/src/app/components/Spinner/Spinner";
 import { FormEvent, useRef } from "react";
 
 interface LoginFormProps {
   onSubmit: (email: string, password: string) => void;
+  isLoading?: boolean;
 }
 
-export default ({ onSubmit }: LoginFormProps) => {
+export default ({ onSubmit, isLoading = false }: LoginFormProps) => {
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const submitHandler = (event: FormEvent) => {
@@ -22,6 +24,7 @@ export default ({ onSubmit }: LoginFormProps) => {
           <input
             className="block w-full rounded-md"
             ref={emailRef}
+            disabled={isLoading}
             type="text"
             placeholder="you@awesome.com"
           />
@@ -31,12 +34,21 @@ export default ({ onSubmit }: LoginFormProps) => {
           <input
             className="block w-full rounded-md"
             type="password"
+            disabled={isLoading}
             ref={passwordRef}
             placeholder="supersecret"
           />
         </div>
       </div>
-      <button className="mt-8 text-center bg-slate-600 w-full block py-2 text-white font-semibold rounded-md">
+      <button
+        disabled={isLoading}
+        className="relative mt-8 text-center bg-slate-600 w-full block py-2 text-white font-semibold rounded-md"
+      >
+        {isLoading ? (
+          <div className="absolute top-1/2 right-2 -translate-y-1/2">
+            <Spinner />
+          </div>
+        ) : null}
         Login
       </button>
     </form>

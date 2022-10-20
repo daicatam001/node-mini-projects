@@ -8,9 +8,16 @@ body {
   min-height: 100%;
   margin: 0;
   padding: 0;
-  @apply bg-slate-100
+  @apply bg-slate-100;
 }
 
 * {
   box-sizing: border-box;
+}
+
+button:disabled {
+  @apply opacity-80;
+}
+input:disabled {
+  @apply bg-slate-200;
 }
