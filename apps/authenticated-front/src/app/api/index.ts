@@ -1,8 +1,9 @@
 import {
   IAuth,
   IUser,
-  UserSignUp,
+  IUserSignUp,
   IBaseResponse,
+  IUserLogin,
 } from "apps/authenticated-front/src/app/models";
 import {
   selectRefreshToken,
@@ -50,8 +51,12 @@ api.interceptors.response.use(
   }
 );
 
-export const signUp = (params: UserSignUp): Promise<IBaseResponse<IAuth>> => {
+export const signUp = (params: IUserSignUp): Promise<IBaseResponse<IAuth>> => {
   return api.post("/sign-up", params);
+};
+
+export const login = (params: IUserLogin): Promise<IBaseResponse<IAuth>> => {
+  return api.post("/login", params);
 };
 
 export const findAuth = (): Promise<IBaseResponse<IUser>> => {

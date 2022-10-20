@@ -58,6 +58,47 @@ export const signup = errorHandler(async (req: Request, res: Response) => {
   });
 });
 
+export const login = errorHandler(async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({
+      success: false,
+      error: "UNAUTHORIZED",
+    });
+  }
+  const checkingAccount = await Account.findOne({ email });
+  if (!checkingAccount) {
+    return res.status(400).json({
+      success: false,
+      error: "UNAUTHORIZED",
+    });
+  }
+  try {
+    const result = await bcrypt.compare(password, checkingAccount.password);
+    if (!result) {
+      return res.status(400).json({
+        success: false,
+        error: "UNAUTHORIZED",
+      });
+    }
+    const user = await User.findOne({ accountId: checkingAccount._id });
+    const refreshToken = await RefreshToken.createToken(user.toData());
+    return res.status(200).json({
+      success: true,
+      data: {
+        user: user.toData(),
+        token: refreshToken.jwtToken,
+        refreshToken: refreshToken.token,
+      },
+    });
+  } catch (e) {
+    return res.status(400).json({
+      success: false,
+      error: "UNAUTHORIZED",
+    });
+  }
+});
+
 export const findAuth = errorHandler(async (req: Request, res: Response) => {
   if (req.user) {
     return res.status(200).json({
@@ -65,7 +106,7 @@ export const findAuth = errorHandler(async (req: Request, res: Response) => {
       data: req.user,
     });
   }
-  return res.status(500).json({
+  return res.status(400).json({
     success: false,
     error: "UNAUTHORIZED",
   });
@@ -80,7 +121,7 @@ export const refreshToken = errorHandler(
         error: "EMPTY_REFRESH_TOKEN",
       });
     }
-    const checkingRefreshToken = await RefreshToken.findOne({
+    let checkingRefreshToken = await RefreshToken.findOne({
       jwtToken: token,
       token: refreshToken,
     });
@@ -97,16 +138,11 @@ export const refreshToken = errorHandler(
       });
     }
     const user = await User.findById(checkingRefreshToken.userId);
-    const jwtToken = jwt.sign(
-      {
-        user: user.toData(),
-      },
-      environment.secretToken,
-      { expiresIn: environment.jwtTokenExpire }
-    );
+   
+    const savedRefreshToken = await checkingRefreshToken.renewToken(user.toData());
     return res.status(200).json({
       success: true,
-      data: jwtToken,
+      data: savedRefreshToken.jwtToken,
     });
   }
 );
