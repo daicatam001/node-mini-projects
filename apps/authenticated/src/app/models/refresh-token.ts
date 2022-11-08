@@ -3,7 +3,7 @@ import { environment } from "apps/authenticated/src/environments/environment";
 import { addSeconds } from "date-fns";
 import { Model, model, Schema, Types } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
-import jwt from "jsonwebtoken";
+import * as jwt from "jsonwebtoken";
 export interface IRefreshToken {
   token: string;
   jwtToken: string;
@@ -49,6 +49,7 @@ const refreshTokenSchema = new Schema<
 );
 
 refreshTokenSchema.static("createToken", function (user: IUser) {
+  console.log(jwt);
   const jwtToken = jwt.sign({ user }, environment.secretToken, {
     expiresIn: environment.jwtTokenExpire,
   });
