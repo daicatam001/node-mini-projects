@@ -1,0 +1,63 @@
+{
+  "name": "currency-flags-crawler",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/currency-flags-crawler/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/currency-flags-crawler",
+        "main": "apps/currency-flags-crawler/src/main.ts",
+        "tsConfig": "apps/currency-flags-crawler/tsconfig.app.json",
+        "assets": [
+          "apps/currency-flags-crawler/src/assets"
+        ]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/currency-flags-crawler/src/environments/environment.ts",
+              "with": "apps/currency-flags-crawler/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/js:node",
+      "options": {
+        "buildTarget": "currency-flags-crawler:build"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "currency-flags-crawler:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "apps/currency-flags-crawler/**/*.ts"
+        ]
+      }
+    }
+  },
+  "tags": [
+    "scope:app",
+    "scope:node"
+  ]
+}

@@ -18,7 +18,18 @@
   },
   "homepage": "https://github.com/daicatam001/node-mini-projects#readme",
   "devDependencies": {
-    "@nrwl/node": "^14.8.4",
+    "@nrwl/eslint-plugin-nx": "14.8.6",
+    "@nrwl/linter": "14.8.6",
+    "@nrwl/node": "^14.8.6",
+    "@types/node": "18.7.1",
+    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "@typescript-eslint/parser": "^5.36.1",
+    "eslint": "~8.15.0",
+    "eslint-config-prettier": "8.1.0",
     "nx": "14.8.4"
+  },
+  "dependencies": {
+    "request": "^2.88.2",
+    "tslib": "^2.3.0"
   }
 }
