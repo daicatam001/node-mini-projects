@@ -1,3 +1,4 @@
+import ForgotPassword from "apps/authenticated-front/src/app/pages/ForgotPassword/ForgotPassword";
 import Home from "apps/authenticated-front/src/app/pages/Home/Home";
 import Login from "apps/authenticated-front/src/app/pages/Login/Login";
 import SignUp from "apps/authenticated-front/src/app/pages/SignUp/SignUp";
@@ -20,6 +21,7 @@ export function App() {
             ></Route>
             <Route path="login" element={<Login />} />
             <Route path="join" element={<SignUp />} />
+            <Route path="forgot" element={<ForgotPassword />} />
           </>
         )}
         <Route

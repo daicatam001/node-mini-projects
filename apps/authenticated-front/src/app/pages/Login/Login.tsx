@@ -35,10 +35,14 @@ export default () => {
         </div>
         <LoginForm onSubmit={loginHandler} isLoading={isLoading} />
         <div className="flex justify-between text-sm mt-4">
-          <div role="button" className="underline underline-offset-1">Forgot password</div>
+          <Link to="/forgot" className="underline underline-offset-1">
+            Forgot password
+          </Link>
           <div>
             Don’t have an account?
-            <Link to="/join" className="underline underline-offset-1 ml-1">Join</Link>
+            <Link to="/join" className="underline underline-offset-1 ml-1">
+              Join
+            </Link>
           </div>
         </div>
       </div>
