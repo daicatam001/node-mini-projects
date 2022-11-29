@@ -10,33 +10,37 @@ export default ({ onSubmit }: ForgotPasswordProps) => {
   const {
     register,
     handleSubmit,
+    formState,
     formState: { isSubmitting, errors },
   } = useForm<ForgotPassowordFormValue>();
-  
 
   return (
-    <form onSubmit={handleSubmit(({email}: ForgotPassowordFormValue)=>{onSubmit(email)})}>
+    <form
+      onSubmit={handleSubmit(({ email }: ForgotPassowordFormValue) =>
+        onSubmit(email)
+      )}
+    >
       <div className="pb-4">
         <label className="block mb-">Email</label>
         <div className="relative">
-        <input
-          className="block w-full rounded-md"
-          {...register("email", {
-            required: "Please enter a valid email",
-            pattern: {
-              value:
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-              message: "Please enter a valid email",
-            },
-          })}
-          type="text"
-          placeholder="you@awesome.com"
-        />
-        {errors.email?.message && (
-          <div className="text-sm text-red-500 absolute left-0 top-full">
-            {errors.email.message}
-          </div>
-        )}
+          <input
+            className="block w-full rounded-md"
+            {...register("email", {
+              required: "Please enter a valid email",
+              pattern: {
+                value:
+                  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                message: "Please enter a valid email",
+              },
+            })}
+            type="text"
+            placeholder="you@awesome.com"
+          />
+          {errors.email?.message && (
+            <div className="text-sm text-red-500 absolute left-0 top-full">
+              {errors.email.message}
+            </div>
+          )}
         </div>
       </div>
       <button

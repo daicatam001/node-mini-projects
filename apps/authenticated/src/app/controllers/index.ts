@@ -1,11 +1,9 @@
 import { errorHandler } from "apps/authenticated/src/app/helpers";
-import User from "apps/authenticated/src/app/models/user";
-import RefreshToken from "apps/authenticated/src/app/models/refresh-token";
 import Account from "apps/authenticated/src/app/models/account";
-import { environment } from "apps/authenticated/src/environments/environment";
+import RefreshToken from "apps/authenticated/src/app/models/refresh-token";
+import User from "apps/authenticated/src/app/models/user";
 import * as bcrypt from "bcrypt";
 import { Request, Response } from "express";
-import * as jwt from "jsonwebtoken";
 
 export const signup = errorHandler(async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
@@ -130,11 +128,28 @@ export const refreshToken = errorHandler(
       });
     }
     const user = await User.findById(checkingRefreshToken.userId);
-   
-    const savedRefreshToken = await checkingRefreshToken.renewToken(user.toData());
+
+    const savedRefreshToken = await checkingRefreshToken.renewToken(
+      user.toData()
+    );
     return res.status(200).json({
       success: true,
       data: savedRefreshToken.jwtToken,
+    });
+  }
+);
+
+export const resetPassword = errorHandler(
+  async (req: Request, res: Response) => {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(403).json({
+        success: false,
+        error: "EMPTY_EMAIl",
+      });
+    }
+    return res.status(200).json({
+      success: true,
     });
   }
 );
