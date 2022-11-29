@@ -48,7 +48,7 @@ export default ({ onSubmit }: ForgotPasswordProps) => {
             <Spinner />
           </div>
         ) : null}
-        Login
+        Send
       </button>
     </form>
   );

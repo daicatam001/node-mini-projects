@@ -1,4 +1,6 @@
-import ForgotPassowordForm from "apps/authenticated-front/src/app/components/ForgotPassowordForm/ForgotPassowordForm";
+import ForgotPassowordForm from "apps/authenticated-front/src/app/components/ForgotPasswordForm/ForgotPasswordForm";
+import ForgotPasswordSent from "apps/authenticated-front/src/app/components/ForgotPasswordSent/ForgotPasswordSent";
+import { Link } from "react-router-dom";
 
 export default () => {
   const submitHandler = (data: any) => {
@@ -13,7 +15,13 @@ export default () => {
           to reset your password.
         </p>
         <ForgotPassowordForm onSubmit={submitHandler} />
+        <div className="text-center mt-4">
+          <Link to="/join">
+            Cancel
+          </Link>
+        </div>
       </div>
+      <ForgotPasswordSent />
     </div>
   );
 };
