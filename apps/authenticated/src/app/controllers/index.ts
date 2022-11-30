@@ -4,6 +4,8 @@ import RefreshToken from "apps/authenticated/src/app/models/refresh-token";
 import User from "apps/authenticated/src/app/models/user";
 import * as bcrypt from "bcrypt";
 import { Request, Response } from "express";
+import { environment } from "../../environments/environment";
+import { sendMail } from "../utils/nodemailer";
 
 export const signup = errorHandler(async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
@@ -148,6 +150,14 @@ export const resetPassword = errorHandler(
         error: "EMPTY_EMAIl",
       });
     }
+
+    await sendMail(
+      environment.mailUsername,
+      email,
+      "Reset password",
+      "reset password link"
+    );
+
     return res.status(200).json({
       success: true,
     });

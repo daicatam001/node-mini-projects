@@ -6,5 +6,8 @@ export const environment = {
   dbName: "authenticated",
   secretToken: "secret-token",
   jwtTokenExpire: 60,
-  refreshTokenExpire: 86400
+  refreshTokenExpire: 86400,
+  mailUsername: "phamthanhtam02095@gmail.com",
+  mailHost: "smtp.ethereal.email",
+  mailPort: 587,
 };
