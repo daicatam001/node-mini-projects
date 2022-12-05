@@ -7,7 +7,9 @@ export const environment = {
   secretToken: "secret-token",
   jwtTokenExpire: 60,
   refreshTokenExpire: 86400,
+  resetPasswordTokenExpire: 300,
   mailUsername: "phamthanhtam02095@gmail.com",
-  mailHost: "smtp.ethereal.email",
+  mailPassword: "@bcdgma1",
+  mailHost: "smtp.gmail.com",
   mailPort: 587,
 };

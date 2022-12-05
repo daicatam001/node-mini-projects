@@ -70,6 +70,8 @@ export const refreshNewToken = (
 };
 export default api;
 
-export const resetPassword = (email: string): Promise<IBaseResponse<null>> => {
+export const resetPassword = (
+  email: string
+): Promise<IBaseResponse<{ resetPasswordToken: string }>> => {
   return api.post("/reset-password", { email });
 };

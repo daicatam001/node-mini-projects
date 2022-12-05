@@ -1,6 +1,7 @@
 import { errorHandler } from "apps/authenticated/src/app/helpers";
 import Account from "apps/authenticated/src/app/models/account";
 import RefreshToken from "apps/authenticated/src/app/models/refresh-token";
+import ResetPasswordToken from "apps/authenticated/src/app/models/reset-password-token";
 import User from "apps/authenticated/src/app/models/user";
 import * as bcrypt from "bcrypt";
 import { Request, Response } from "express";
@@ -145,21 +146,30 @@ export const resetPassword = errorHandler(
   async (req: Request, res: Response) => {
     const { email } = req.body;
     if (!email) {
-      return res.status(403).json({
-        success: false,
-        error: "EMPTY_EMAIl",
+      return res.status(200).json({
+        success: true,
+        data: {
+          resetPasswordToken: "",
+        },
       });
     }
 
-    await sendMail(
-      environment.mailUsername,
-      email,
-      "Reset password",
-      "reset password link"
-    );
+    const foundUser = await User.findOne({ email });
+    if (!foundUser) {
+      return res.status(200).json({
+        success: true,
+        data: {
+          resetPasswordToken: "",
+        },
+      });
+    }
 
+    const resetPasswordToken = await ResetPasswordToken.createToken(foundUser);
     return res.status(200).json({
       success: true,
+      data: {
+        resetPasswordToken: resetPasswordToken.token,
+      },
     });
   }
 );

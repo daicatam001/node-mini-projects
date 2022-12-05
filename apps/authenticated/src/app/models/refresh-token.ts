@@ -49,7 +49,6 @@ const refreshTokenSchema = new Schema<
 );
 
 refreshTokenSchema.static("createToken", function (user: IUser) {
-  console.log(jwt);
   const jwtToken = jwt.sign({ user }, environment.secretToken, {
     expiresIn: environment.jwtTokenExpire,
   });

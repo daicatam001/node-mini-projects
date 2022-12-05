@@ -9,8 +9,8 @@ const createTransport = async () => {
     host: environment.mailHost,
     port: environment.mailPort,
     auth: {
-      user: account.user,
-      pass: account.pass,
+      user: environment.mailUsername,
+      pass: environment.mailPassword,
     },
   });
 };
@@ -24,7 +24,7 @@ export const sendMail = async (
   if (!transporter) {
     await createTransport();
   }
-  console.log(to)
+  console.log(to, transporter);
   return await transporter.sendMail({
     from,
     to,
