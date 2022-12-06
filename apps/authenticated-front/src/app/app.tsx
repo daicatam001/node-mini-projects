@@ -1,6 +1,7 @@
 import ForgotPassword from "apps/authenticated-front/src/app/pages/ForgotPassword/ForgotPassword";
 import Home from "apps/authenticated-front/src/app/pages/Home/Home";
 import Login from "apps/authenticated-front/src/app/pages/Login/Login";
+import ChangePassword from "apps/authenticated-front/src/app/pages/ChangePassword/ChangePassword";
 import SignUp from "apps/authenticated-front/src/app/pages/SignUp/SignUp";
 import { selectIsAuth } from "apps/authenticated-front/src/app/state/authSlide";
 import { useSelector } from "react-redux";
@@ -22,6 +23,7 @@ export function App() {
             <Route path="login" element={<Login />} />
             <Route path="join" element={<SignUp />} />
             <Route path="forgot" element={<ForgotPassword />} />
+            <Route path="change-password" element={<ChangePassword />} />
           </>
         )}
         <Route

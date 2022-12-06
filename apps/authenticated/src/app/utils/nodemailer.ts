@@ -1,18 +1,15 @@
 import * as nodemailer from "nodemailer";
+import * as sendGrid from "nodemailer-sendgrid";
 import { environment } from "../../environments/environment";
 
 let transporter;
 
-const createTransport = async () => {
-  const account = await nodemailer.createTestAccount();
-  transporter = nodemailer.createTransport({
-    host: environment.mailHost,
-    port: environment.mailPort,
-    auth: {
-      user: environment.mailUsername,
-      pass: environment.mailPassword,
-    },
-  });
+const createTransport = () => {
+  transporter = nodemailer.createTransport(
+    sendGrid({
+      apiKey: environment.sendGridApiKey,
+    })
+  );
 };
 
 export const sendMail = async (
@@ -22,9 +19,9 @@ export const sendMail = async (
   html: string
 ) => {
   if (!transporter) {
-    await createTransport();
+    createTransport();
   }
-  console.log(to, transporter);
+  console.log(transporter)
   return await transporter.sendMail({
     from,
     to,

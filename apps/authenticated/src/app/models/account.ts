@@ -1,6 +1,8 @@
 import { model, Schema } from "mongoose";
 
 export interface IAccount {
+  id: string;
+  _id: string;
   email: string;
   password: string;
 }

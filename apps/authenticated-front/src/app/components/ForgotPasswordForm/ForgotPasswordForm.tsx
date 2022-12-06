@@ -21,7 +21,7 @@ export default ({ onSubmit }: ForgotPasswordProps) => {
       )}
     >
       <div className="pb-4">
-        <label className="block mb-">Email</label>
+        <label className="block mb-1">Email</label>
         <div className="relative">
           <input
             className="block w-full rounded-md"

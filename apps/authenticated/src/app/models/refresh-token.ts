@@ -7,7 +7,7 @@ import * as jwt from "jsonwebtoken";
 export interface IRefreshToken {
   token: string;
   jwtToken: string;
-  userId: IUser;
+  user: IUser;
   expireAt: Date;
 }
 
@@ -37,7 +37,7 @@ const refreshTokenSchema = new Schema<
     expireAt: {
       type: Date,
     },
-    userId: {
+    user: {
       type: Types.ObjectId,
       ref: "User",
     },
@@ -56,7 +56,7 @@ refreshTokenSchema.static("createToken", function (user: IUser) {
   const _refreshToken = uuidv4();
   return this.create({
     jwtToken,
-    userId: user._id,
+    user: user._id,
     token: _refreshToken,
     expireAt,
   });

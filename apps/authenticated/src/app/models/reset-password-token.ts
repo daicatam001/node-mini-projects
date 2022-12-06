@@ -1,3 +1,4 @@
+import { IAccount } from "apps/authenticated/src/app/models/account";
 import { IUser } from "apps/authenticated/src/app/models/user";
 import { environment } from "apps/authenticated/src/environments/environment";
 import { addSeconds } from "date-fns";
@@ -6,13 +7,13 @@ import { v4 as uuidv4 } from "uuid";
 
 export interface IResetPasswordToken {
   token: string;
-  userId: IUser;
+  account: IAccount;
   expireAt: Date;
 }
 
 export interface IResetPasswordTokenModel
   extends Model<IResetPasswordToken, {}, IResetPasswordTokenMethods> {
-  createToken: (user: IUser) => Promise<IResetPasswordToken>;
+  createToken: (account: IAccount) => Promise<IResetPasswordToken>;
 }
 
 export interface IResetPasswordTokenMethods {
@@ -31,22 +32,22 @@ const resetPasswordTokenSchema = new Schema<
     expireAt: {
       type: Date,
     },
-    userId: {
+    account: {
       type: Types.ObjectId,
-      ref: "User",
+      ref: "Account",
     },
   },
   {
     timestamps: true,
-    collection: "ResetPassword-tokens",
+    collection: "reset-password-tokens",
   }
 );
 
-resetPasswordTokenSchema.static("createToken", function (user: IUser) {
+resetPasswordTokenSchema.static("createToken", function (account: IAccount) {
   const expireAt = addSeconds(new Date(), environment.resetPasswordTokenExpire);
   const token = uuidv4();
   return this.create({
-    userId: user._id,
+    account: account._id,
     token,
     expireAt,
   });

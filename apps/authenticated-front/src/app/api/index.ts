@@ -75,3 +75,13 @@ export const resetPassword = (
 ): Promise<IBaseResponse<{ resetPasswordToken: string }>> => {
   return api.post("/reset-password", { email });
 };
+
+export const getResetPasswordTokenStatus = (
+  token: string
+): Promise<IBaseResponse<{ status: string }>> => {
+  return api.get(`/reset-password/${token}/status`);
+};
+
+export const changePassword = (password: string, token: string) => {
+  return api.post("/change-password", { password, token });
+};

@@ -130,8 +130,7 @@ export const refreshToken = errorHandler(
         error: "REFRESH_TOKEN_EXPIRED",
       });
     }
-    const user = await User.findById(checkingRefreshToken.userId);
-
+    const user = await User.findById(checkingRefreshToken.user);
     const savedRefreshToken = await checkingRefreshToken.renewToken(
       user.toData()
     );
@@ -154,8 +153,8 @@ export const resetPassword = errorHandler(
       });
     }
 
-    const foundUser = await User.findOne({ email });
-    if (!foundUser) {
+    const foundAccount = await Account.findOne({ email });
+    if (!foundAccount) {
       return res.status(200).json({
         success: true,
         data: {
@@ -163,8 +162,15 @@ export const resetPassword = errorHandler(
         },
       });
     }
-
-    const resetPasswordToken = await ResetPasswordToken.createToken(foundUser);
+    await sendMail(
+      environment.mailSender,
+      "tampt95@gmail.com",
+      "Reset password",
+      "reset password"
+    );
+    const resetPasswordToken = await ResetPasswordToken.createToken(
+      foundAccount
+    );
     return res.status(200).json({
       success: true,
       data: {
@@ -173,3 +179,61 @@ export const resetPassword = errorHandler(
     });
   }
 );
+
+export const getResetPasswordTokenStatus = errorHandler(async (req, res) => {
+  const { token } = req.params;
+  const resetPwToken = await ResetPasswordToken.findOne({ token });
+  if (!resetPwToken) {
+    return res.status(400).json({
+      success: false,
+      error: "TOKEN_NOT_FOUND",
+    });
+  }
+  if (resetPwToken.isExpired()) {
+    return res.status(400).json({
+      success: false,
+      error: "TOKEN_IS_EXPIRED",
+    });
+  }
+  return res.status(200).json({
+    success: true,
+    status: "OK",
+  });
+});
+
+export const changePassword = errorHandler(async (req, res) => {
+  const { password, token } = req.body;
+  const resetPwToken = await ResetPasswordToken.findOne({ token });
+  if (!resetPwToken) {
+    return res.status(400).json({
+      success: false,
+      error: "TOKEN_NOT_FOUND",
+    });
+  }
+
+  const account = await Account.findById(resetPwToken.account);
+
+  if (!account) {
+    return res.status(400).json({
+      success: false,
+      error: "ACCOUNT_NOT_FOUND",
+    });
+  }
+  const hashedPassword = await new Promise<string>((resolve, reject) => {
+    bcrypt.hash(password, 10, (err, hash) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(hash);
+    });
+  });
+
+  account.password = hashedPassword;
+  await resetPwToken.delete();
+  await account.save();
+
+  return res.status(200).json({
+    success: true,
+    status: "OK",
+  });
+});

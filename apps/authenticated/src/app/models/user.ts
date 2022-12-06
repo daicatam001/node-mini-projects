@@ -6,7 +6,7 @@ export interface IUser {
   _id: string;
   email: string;
   name: string;
-  accountId: IAccount;
+  account: IAccount;
 }
 
 export interface IUserMethods {
@@ -24,7 +24,7 @@ const userSchema = new Schema<IUser, IUserModel, IUserMethods>(
       type: String,
       required: true,
     },
-    accountId: {
+    account: {
       type: Types.ObjectId,
       ref: "Account",
     },
@@ -36,7 +36,7 @@ const userSchema = new Schema<IUser, IUserModel, IUserMethods>(
 
 userSchema.methods.toData = function () {
   const data = this.toJSON({ virtuals: true, id: true });
-  delete data.accountId;
+  delete data.account;
   delete data.__v;
   return data;
 };

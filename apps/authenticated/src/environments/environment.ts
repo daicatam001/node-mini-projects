@@ -8,8 +8,7 @@ export const environment = {
   jwtTokenExpire: 60,
   refreshTokenExpire: 86400,
   resetPasswordTokenExpire: 300,
-  mailUsername: "phamthanhtam02095@gmail.com",
-  mailPassword: "@bcdgma1",
-  mailHost: "smtp.gmail.com",
-  mailPort: 587,
+  sendGridApiKey:
+    "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",
+  mailSender: "phamthanhtam020295@gmail.com",
 };
