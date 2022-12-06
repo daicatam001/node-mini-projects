@@ -46,7 +46,7 @@ export default () => {
         {tokenValid && !changePwSuccess ? (
           <>
             <ChangePasswordForm onSubmit={submitHandler} />
-            <div className="text-center mt-4 text-lg">
+            <div className="text-center mt-4">
               Need an account?{" "}
               <Link to="/join" className="underline">
                 Join
