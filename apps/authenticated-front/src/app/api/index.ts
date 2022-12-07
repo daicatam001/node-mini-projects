@@ -85,3 +85,7 @@ export const getResetPasswordTokenStatus = (
 export const changePassword = (password: string, token: string) => {
   return api.post("/change-password", { password, token });
 };
+
+export const logout = () => {
+  localStorage.clear();
+};

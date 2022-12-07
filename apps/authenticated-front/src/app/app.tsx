@@ -1,7 +1,7 @@
-import ForgotPassword from "apps/authenticated-front/src/app/pages/ForgotPassword/ForgotPassword";
-import Home from "apps/authenticated-front/src/app/pages/Home/Home";
-import Login from "apps/authenticated-front/src/app/pages/Login/Login";
 import ChangePassword from "apps/authenticated-front/src/app/pages/ChangePassword/ChangePassword";
+import ForgotPassword from "apps/authenticated-front/src/app/pages/ForgotPassword/ForgotPassword";
+import Login from "apps/authenticated-front/src/app/pages/Login/Login";
+import Profile from "apps/authenticated-front/src/app/pages/Profile/Profile";
 import SignUp from "apps/authenticated-front/src/app/pages/SignUp/SignUp";
 import { selectIsAuth } from "apps/authenticated-front/src/app/state/authSlide";
 import { useSelector } from "react-redux";
@@ -13,7 +13,7 @@ export function App() {
     <Routes>
       <Route path="" element={<Outlet />}>
         {isAuth ? (
-          <Route index element={<Home />} />
+          <Route index element={<Profile />} />
         ) : (
           <>
             <Route

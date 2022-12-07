@@ -15,9 +15,27 @@ body {
   box-sizing: border-box;
 }
 
+.container {
+  @apply max-w-[1200px] mx-auto px-4;
+}
+
 button:disabled {
   @apply opacity-80;
 }
 input:disabled {
   @apply bg-slate-200;
+}
+
+.btn {
+  @apply relative text-center px-6 block py-2 font-semibold rounded-md;
+}
+
+.btn-primary {
+  @apply btn;
+  @apply bg-slate-600  text-white;
+}
+
+.btn-danger {
+  @apply btn;
+  @apply bg-red-500  text-white;
 }

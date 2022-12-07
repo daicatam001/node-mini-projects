@@ -45,7 +45,7 @@ export default ({ onSubmit }: ForgotPasswordProps) => {
       </div>
       <button
         disabled={isSubmitting}
-        className="relative mt-4 text-center bg-slate-600 w-full block py-2 text-white font-semibold rounded-md"
+        className="btn-primary mt-4 w-full"
       >
         {isSubmitting ? (
           <div className="absolute top-1/2 right-2 -translate-y-1/2">

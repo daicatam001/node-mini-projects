@@ -23,7 +23,7 @@ export default () => {
     }
   };
   return (
-    <div className="pt-[100px]">
+    <div className="pt-[100px] container">
       <div className="max-w-[400px] mx-auto">
         <h1 className="font-bold text-3xl mb-8 text-center">Login</h1>
         <div

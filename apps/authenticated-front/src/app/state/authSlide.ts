@@ -36,6 +36,13 @@ export const authSlide = createSlice({
         action.payload.refreshToken || ""
       );
     },
+    clearAuth(state: AuthState) {
+      state.refreshToken = "";
+      state.token = "";
+      state.user = null;
+      updatelocalStorageValue(TOKEN_KEY, "");
+      updatelocalStorageValue(REFRESH_TOKEN_KEY, "");
+    },
     initTokens(state: AuthState) {
       state.token = localStorage.getItem(TOKEN_KEY);
       state.refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
@@ -47,12 +54,20 @@ const updatelocalStorageValue = (key: string, value: string) => {
   value ? localStorage.setItem(key, value) : localStorage.removeItem(key);
 };
 
-export const { setUser, setToken, setRefreshToken, setAuth, initTokens } =
-  authSlide.actions;
+export const {
+  setUser,
+  setToken,
+  setRefreshToken,
+  setAuth,
+  clearAuth,
+  initTokens,
+} = authSlide.actions;
 
 export const selectIsAuth = ({ auth }: { auth: AuthState }) => !!auth.user;
+export const selectUser = ({ auth }: { auth: AuthState }) => auth.user;
 export const selectToken = ({ auth }: { auth: AuthState }) => auth.token;
-export const selectRefreshToken = ({ auth }: { auth: AuthState }) => auth.refreshToken;
+export const selectRefreshToken = ({ auth }: { auth: AuthState }) =>
+  auth.refreshToken;
 export const selectHasTokens = ({ auth }: { auth: AuthState }) =>
   !!auth.token && !!auth.refreshToken;
 export default authSlide.reducer;

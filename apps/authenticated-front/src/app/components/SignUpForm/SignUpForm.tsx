@@ -54,7 +54,7 @@ export default ({ onSubmit, isLoading = false }: SignUpFormProps) => {
       </div>
       <button
         disabled={isLoading}
-        className="mt-8 text-center bg-slate-600 w-full block py-2 text-white font-semibold rounded-md"
+        className="btn-primary mt-8 w-full"
       >
         {isLoading ? (
           <div className="absolute top-1/2 right-2 -translate-y-1/2">

@@ -2,6 +2,7 @@ export interface IUser {
   id: string;
   name: string;
   email: string;
+  createdAt: string;
 }
 
 export type IUserSignUp = Pick<IUser, "name" | "email"> & { password: string };
