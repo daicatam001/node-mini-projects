@@ -237,3 +237,25 @@ export const changePassword = errorHandler(async (req, res) => {
     status: "OK",
   });
 });
+
+export const updateUser = errorHandler(async (req, res) => {
+  const { name, description } = req.body;
+  if (!name) {
+    return res.status(400).json({
+      success: false,
+      message: "NAME_IS_REQUIRED",
+    });
+  }
+  const user = await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      name,
+      description,
+    },
+    { new: true }
+  );
+  return res.status(200).json({
+    success: true,
+    data: user.toData(),
+  });
+});

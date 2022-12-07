@@ -1,4 +1,5 @@
 import ChangePassword from "apps/authenticated-front/src/app/pages/ChangePassword/ChangePassword";
+import EditProfile from "apps/authenticated-front/src/app/pages/EditProfile/EditProfile";
 import ForgotPassword from "apps/authenticated-front/src/app/pages/ForgotPassword/ForgotPassword";
 import Login from "apps/authenticated-front/src/app/pages/Login/Login";
 import Profile from "apps/authenticated-front/src/app/pages/Profile/Profile";
@@ -13,12 +14,15 @@ export function App() {
     <Routes>
       <Route path="" element={<Outlet />}>
         {isAuth ? (
-          <Route index element={<Profile />} />
+          <>
+            <Route index element={<Profile />} />
+            <Route path="edit-profile" element={<EditProfile />} />
+          </>
         ) : (
           <>
             <Route
               index
-              element={<Navigate to={isAuth ? "/" : "/login"} />}
+              element={<Navigate to={"/login"} />}
             ></Route>
             <Route path="login" element={<Login />} />
             <Route path="join" element={<SignUp />} />

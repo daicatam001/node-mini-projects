@@ -86,6 +86,10 @@ export const changePassword = (password: string, token: string) => {
   return api.post("/change-password", { password, token });
 };
 
+export const updateProfile = (data: Pick<IUser, "name" | "description">) => {
+  return api.put("/user", data);
+};
+
 export const logout = () => {
   localStorage.clear();
 };

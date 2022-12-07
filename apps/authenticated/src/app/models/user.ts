@@ -6,6 +6,7 @@ export interface IUser {
   _id: string;
   email: string;
   name: string;
+  description: string;
   account: IAccount;
 }
 
@@ -23,6 +24,9 @@ const userSchema = new Schema<IUser, IUserModel, IUserMethods>(
     name: {
       type: String,
       required: true,
+    },
+    description: {
+      type: String,
     },
     account: {
       type: Types.ObjectId,

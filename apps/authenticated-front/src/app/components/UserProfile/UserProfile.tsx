@@ -10,7 +10,7 @@ export default ({ user }: UserProfileProps) => {
   const joinDateFormated = format(new Date(user.createdAt), "MMMM yyyy");
   return (
     <>
-      <div className="h-[120px] bg-slate-300">
+      <div className="h-[120px] bg-slate-100">
         <div className="container relative">
           <div
             className="w-[120px] h-[120px] absolute left-0 top-10 rounded-full border-4 
