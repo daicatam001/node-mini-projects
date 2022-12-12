@@ -10,16 +10,17 @@ export default ({ onSubmit }: ForgotPasswordProps) => {
   const {
     register,
     handleSubmit,
-    formState,
     watch,
+    reset,
     formState: { isSubmitting, errors },
   } = useForm<ForgotPassowordFormValue>();
   const password = watch("password");
   return (
     <form
-      onSubmit={handleSubmit(({ password }: ForgotPassowordFormValue) =>
-        onSubmit(password)
-      )}
+      onSubmit={handleSubmit(async ({ password }: ForgotPassowordFormValue) => {
+        await onSubmit(password);
+        reset();
+      })}
     >
       <div className="pb-4">
         <label className="block mb-1">New Password</label>
@@ -48,12 +49,12 @@ export default ({ onSubmit }: ForgotPasswordProps) => {
           <input
             className="block w-full rounded-md"
             {...register("passwordConfirm", {
-
               validate: {
                 match: (v) => {
-                  return v === password ? true : 'Confirm password doesn\'t match' ;
+                  return v === password
+                    ? true
+                    : "Confirm password doesn't match";
                 },
-               
               },
             })}
             type="password"
@@ -65,10 +66,7 @@ export default ({ onSubmit }: ForgotPasswordProps) => {
           )}
         </div>
       </div>
-      <button
-        disabled={isSubmitting}
-        className="btn-primary mt-4 w-full"
-      >
+      <button disabled={isSubmitting} className="btn-primary mt-4 w-full">
         {isSubmitting ? (
           <div className="absolute top-1/2 right-2 -translate-y-1/2">
             <Spinner />

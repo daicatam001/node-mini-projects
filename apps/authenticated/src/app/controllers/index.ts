@@ -5,6 +5,7 @@ import ResetPasswordToken from "apps/authenticated/src/app/models/reset-password
 import User from "apps/authenticated/src/app/models/user";
 import * as bcrypt from "bcrypt";
 import { Request, Response } from "express";
+import { Document } from "mongoose";
 import { environment } from "../../environments/environment";
 import { sendMail } from "../utils/nodemailer";
 
@@ -38,7 +39,7 @@ export const signup = errorHandler(async (req: Request, res: Response) => {
   const user = await User.create({
     name,
     email,
-    accountId: account._id,
+    account: account._id,
   });
   const refreshToken = await RefreshToken.createToken(user.toData());
   return res.status(200).json({
@@ -74,7 +75,7 @@ export const login = errorHandler(async (req: Request, res: Response) => {
         error: "UNAUTHORIZED",
       });
     }
-    const user = await User.findOne({ accountId: checkingAccount._id });
+    const user = await User.findOne({ account: checkingAccount._id });
     const refreshToken = await RefreshToken.createToken(user.toData());
     return res.status(200).json({
       success: true,
@@ -93,7 +94,8 @@ export const login = errorHandler(async (req: Request, res: Response) => {
 });
 
 export const findAuth = errorHandler(async (req: Request, res: Response) => {
-  if (req.user) {
+  const user = await User.findById(req.user!.id);
+  if (user) {
     return res.status(200).json({
       success: true,
       data: req.user,
@@ -201,8 +203,9 @@ export const getResetPasswordTokenStatus = errorHandler(async (req, res) => {
   });
 });
 
-export const changePassword = errorHandler(async (req, res) => {
-  const { password, token } = req.body;
+export const changePasswordByToken = errorHandler(async (req, res) => {
+  const { password } = req.body;
+  const { token } = req.params;
   const resetPwToken = await ResetPasswordToken.findOne({ token });
   if (!resetPwToken) {
     return res.status(400).json({
@@ -231,6 +234,34 @@ export const changePassword = errorHandler(async (req, res) => {
   account.password = hashedPassword;
   await resetPwToken.delete();
   await account.save();
+
+  return res.status(200).json({
+    success: true,
+    status: "OK",
+  });
+});
+
+export const changePassword = errorHandler(async (req, res) => {
+  const { password } = req.body;
+  console.log(password)
+  const { account } = await User.findById(req.user!.id).populate("account");
+  if (!account) {
+    return res.status(400).json({
+      success: false,
+      error: "ACCOUNT_NOT_FOUND",
+    });
+  }
+  const hashedPassword = await new Promise<string>((resolve, reject) => {
+    bcrypt.hash(password, 10, (err, hash) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(hash);
+    });
+  });
+
+  account.password = hashedPassword;
+  await ((account as unknown) as Document).save();
 
   return res.status(200).json({
     success: true,

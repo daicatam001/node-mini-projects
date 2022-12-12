@@ -40,7 +40,10 @@ api.interceptors.response.use(
         const { data } = await refreshNewToken(token || "", refreshToken || "");
         store.dispatch(setToken(data));
         if (error.config) {
-          return api.request({ ...error.config, headers: { retry: true } });
+          return api.request({
+            ...error.config,
+            headers: { ...error.config.headers },
+          });
         }
       } catch (e) {
         store.dispatch(setAuth({}));
@@ -82,8 +85,12 @@ export const getResetPasswordTokenStatus = (
   return api.get(`/reset-password/${token}/status`);
 };
 
-export const changePassword = (password: string, token: string) => {
-  return api.post("/change-password", { password, token });
+export const changePasswordByToken = (password: string, token: string) => {
+  return api.post(`/change-password/token/${token}`, { password });
+};
+
+export const changePassword = (password: string) => {
+  return api.post(`/change-password/`, { password });
 };
 
 export const updateProfile = (data: Pick<IUser, "name" | "description">) => {

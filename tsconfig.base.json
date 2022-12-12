@@ -17,7 +17,11 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "shared/util-toast": [
+        "libs/shared/util-toast/src/index.ts"
+      ]
+    }
   },
   "exclude": [
     "node_modules",

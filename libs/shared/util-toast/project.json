@@ -1,0 +1,36 @@
+{
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/util-toast/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/libs/shared/util-toast",
+        "main": "libs/shared/util-toast/src/index.ts",
+        "tsConfig": "libs/shared/util-toast/tsconfig.lib.json",
+        "assets": [
+          "libs/shared/util-toast/*.md"
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "libs/shared/util-toast/**/*.ts"
+        ]
+      }
+    }
+  },
+  "tags": [
+    "scope:fe",
+    "scope:util"
+  ]
+}

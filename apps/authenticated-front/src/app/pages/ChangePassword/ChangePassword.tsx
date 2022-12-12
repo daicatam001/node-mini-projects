@@ -1,5 +1,5 @@
 import {
-  changePassword,
+  changePasswordByToken,
   getResetPasswordTokenStatus,
 } from "apps/authenticated-front/src/app/api";
 import ChangePasswordDes from "apps/authenticated-front/src/app/components/ChangePasswordDes/ChangePasswordDes";
@@ -31,7 +31,7 @@ export default () => {
   }, []);
 
   const submitHandler = async (password: string) => {
-    await changePassword(password, token as string);
+    await changePasswordByToken(password, token as string);
     setChangePwSuccess(true);
   };
 
